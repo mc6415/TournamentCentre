@@ -1,0 +1,120 @@
+extends ./layout.pug
+
+block header
+  meta(author='Michael Coombes')
+  script(src='/js/signup.js')
+  link(rel='stylesheet', href='/css/login.css')
+    
+block content 
+  // All the files that are required
+  link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+  link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
+  meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+  // Where all the magic happens
+  // LOGIN FORM
+  .text-center(style='padding:50px 0')#loginForm
+    .logo login
+    // Main Form
+    .login-form-1
+      form#login-form.text-left(action='/user/login', method='post')
+        .login-form-main-message
+        .main-login-form
+          .login-group
+            .form-group
+              label.sr-only(for='username') Username
+              input#lg_username.form-control(type='text', name='lg_username', placeholder='username')
+            .form-group
+              label.sr-only(for='password') Password
+              input#lg_password.form-control(type='password', name='lg_password', placeholder='password')
+            //.form-group.login-group-checkbox
+              input#lg_remember(type='checkbox', name='lg_remember')
+              label(for='lg_remember') remember
+          button.login-button(type='submit')
+            i.fa.fa-chevron-right
+        .etc-login-form
+          p
+            | forgot your password? 
+            a(href='#') click here
+          p
+            | new user? 
+            a(href='#' onclick='showRegForm()') create new account
+    // end:Main Form
+  // REGISTRATION FORM
+  .text-center(style='padding:50px 0;display:none')#registerForm
+    .logo register
+    // Main Form
+    .login-form-1
+      form#register-form.text-left(action='/user/register', method='post')
+        .login-form-main-message
+        .main-login-form
+          .login-group
+            .form-group
+              label.sr-only(for='username') Username
+              input#reg_username.form-control(type='text', name='username', placeholder='username')
+            .form-group
+              label.sr-only(for='password') Password
+              input#reg_password.form-control(type='password', name='password', placeholder='password')
+            .form-group
+              label.sr-only(for='password_confirm') Password Confirm
+              input#reg_password_confirm.form-control(type='password', name='password_confirm', placeholder='confirm password')
+            .form-group
+              label.sr-only(for='battleTag') Battle Tag
+              input#reg_email.form-control(type='text', name='battleTag', placeholder='Battle Tag')
+            //.form-group
+              label.sr-only(for='reg_fullname') Full Name
+              input#reg_fullname.form-control(type='text', name='reg_fullname', placeholder='full name')
+            //.form-group.login-group-checkbox
+              input#male(type='radio', name='reg_gender', placeholder='username')
+              label(for='male') male
+              input#female(type='radio', name='reg_gender', placeholder='username')
+              label(for='female') female
+            //.form-group.login-group-checkbox
+              input#reg_agree(type='checkbox', name='reg_agree')
+              label(for='reg_agree')
+                | i agree with 
+                a(href='#') terms
+          button.login-button(type='submit')
+            i.fa.fa-chevron-right
+        .etc-login-form
+          p
+            | already have an account? 
+            a(href='#' onclick="showLoginForm()") login here
+    // end:Main Form
+  // FORGOT PASSWORD FORM
+  .text-center(style='padding:50px 0;display:none')
+    .logo forgot password
+    // Main Form
+    .login-form-1
+      form#forgot-password-form.text-left
+        .etc-login-form
+          p
+            | When you fill in your registered email address, you will be sent instructions on how to reset your password.
+        .login-form-main-message
+        .main-login-form
+          .login-group
+            .form-group
+              label.sr-only(for='fp_email') Email address
+              input#fp_email.form-control(type='text', name='fp_email', placeholder='email address')
+          button.login-button(type='submit')
+            i.fa.fa-chevron-right
+        .etc-login-form
+          p
+            | already have an account? 
+            a(href='#') login here
+          p
+            | new user? 
+            a(href='#') create new account
+    // end:Main Form
+  script.
+    function showRegForm(){
+      $('#loginForm').fadeOut('slow', function(){
+        $('#registerForm').fadeIn();
+      });
+    }
+    function showLoginForm(){
+      $('#registerForm').fadeOut('slow', function(){
+        $('#loginForm').fadeIn();
+      })
+    }
+
+    

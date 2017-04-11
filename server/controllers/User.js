@@ -9,10 +9,54 @@ module.exports.create = function(req,res){
   const salt = randomstring.generate(10);
   const pepper = randomstring.generate(10);
 
+  user.username = req.body.username;
+  user.salt = salt;
+  user.pepper = pepper;
+  user.password = sha256(salt) + sha256(req.body.password) + sha256(pepper);
+  user.battleTag = req.body.battleTag;
+  user.isAdmin = 0;
+
+  user.save(function(err,user){
+    if(err){
+      res.render('index', {
+        toast: true,
+        toastType: 'error',
+        toastMessage: 'Error Registering Account, if this happens again please contact the site admin.'
+    })
+  } else {
+    res.render('index', {
+      toast: true,
+      toastType: 'success',
+      toastMessage: 'Succesfully registered account, welcome ' + user.username + '! :)'
+    })
+  }
+  })
+
 }
 
 module.exports.login = function(req,res){
-  // req.session.user = user
+  User.find({username: req.body.username}, function(err, docs){
+    if(err){
+      res.render('index', {
+        toast: true,
+        toastType: 'error',
+        toastMessage: 'Unexpected Error occured while logging in, if this happens again please contact the site admin'
+      })
+    } else {
+      const user = docs[0];
+      const passwordEntry = sha256(user.salt) + sha256(req.body.password) + sha256(user.pepper);
+      if(user.password == passwordEntry){
+        req.session.user = user;
+        res.send("Hello there " + user.username + "! :)");
+      } else {
+        res.render('index', {
+          toast: true,
+          toastType: 'error',
+          toastMessage: 'Failed to login, is your password correct?'
+        })
+      }
+    }
+  })
 }
 
 module.exports.logout = function(req,res){

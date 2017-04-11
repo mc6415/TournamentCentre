@@ -71,8 +71,10 @@ app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/img', express.static(__dirname + '/public/img'));
 
 app.get('/', function(req,res){
-  res.render('index')
+  res.render('index', {toast: false})
 });
+app.post('/user/register', controllers.User.create)
+app.post('/user/login', controllers.User.login)
 app.get('/test', restrict, function(req,res){
   res.send("Login working fine famz");
 })

@@ -1,0 +1,55 @@
+extends ./layout.pug
+
+block content
+  h1 Tournaments
+  table.table
+    thead
+      tr
+        th Name
+        th Format
+        if user.isAdmin > 0
+          th 
+          th 
+    tbody
+      for t in tournaments
+        tr
+          td #{t.title}
+          td #{t.format.name}
+          if user.isAdmin > 0
+            td
+              button.btn Edit
+            td
+              button.btn Delete
+  button.btn.btn-primary.btn-lg(data-toggle="modal" data-target="#createTournament") Add Tournament
+  #createTournament.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          button.close(type='button', data-dismiss='modal')
+            span(aria-hidden='true') ×
+            span.sr-only Close
+          h4#myModalLabel.modal-title
+            | Create Tournament
+        // Modal Body
+        .modal-body
+          form#createForm(role='form', action='/api/tournament/create', method='post')
+            .form-group
+              label(for='title') Tournament Name
+              input#title.form-control(type='text', placeholder='Enter name', name='title')
+            .form-group
+              label(for='format') Format
+              select#teamSize.form-control(placeholder='Format', name='format')
+                for format in formats
+                  option(value=format.id) #{format.name}
+            //- .checkbox
+              label
+                input(type='checkbox')
+                |  Check me out
+            button.btn.btn-default(type='submit') Submit
+        // Modal Footer
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal')
+            | Close
+          button.btn.btn-primary(type='button', onClick='document.getElementById("createForm").submit()')
+            | Save changes

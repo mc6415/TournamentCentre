@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Competitor = require('../models/competitor');
 const sha256 = require('sha256');
 const randomstring = require('randomstring');
 const key = 'userToken';
@@ -47,7 +48,7 @@ module.exports.login = function(req,res){
       const passwordEntry = sha256(user.salt) + sha256(req.body.password) + sha256(user.pepper);
       if(user.password == passwordEntry){
         req.session.user = user;
-        res.send("Hello there " + user.username + "! :)");
+        res.redirect('/dashboard');
       } else {
         res.render('index', {
           toast: true,
@@ -56,6 +57,18 @@ module.exports.login = function(req,res){
         })
       }
     }
+  })
+}
+
+module.exports.home = function(req,res){
+  Competitor.find({user: req.session.user}, function(err,docs){
+    if(err){
+      res.send(err);
+    } else{
+      console.log(docs);
+      res.render('dashboard', {user: req.session.user})
+    }
+
   })
 }
 

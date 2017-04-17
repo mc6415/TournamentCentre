@@ -1,0 +1,257 @@
+extends ./layout.pug
+
+block content
+  #dashboardHome.col-xs-11
+    .container
+      .container
+          br
+          |         
+          .row
+            .col-sm-6.col-lg-3
+              .panel.panel-primary
+                .panel-heading
+                  h4.text-center
+                    | User Profile
+                    span.glyphicon.glyphicon-user.pull-right
+                |                     
+                .panel-body.text-center
+                  p.lead
+                    strong #{user.username}
+                |                     
+                //- ul.list-group.list-group-flush
+                  li.list-group-item.liitem
+                    strong Position:
+                    |                             
+                    span.pull-right Developer
+                  |                         
+                  li.list-group-item.liitem
+                    strong Company:
+                    |                             
+                    span.pull-right EasyTech
+                  |                         
+                  li.list-group-item.liitem
+                    strong Department:
+                    |                             
+                    span.pull-right Dataviz
+                  |                         
+                  li.list-group-item.liitem
+                    strong Project Duration:
+                    |                             
+                    span.pull-right 12 months
+                |                     
+                //- .panel-footer
+                  .row
+                    .col-xs-4.col-sm-3.col-md-4.col-lg-2
+                    |                             
+                    #qr1.col-xs-2.col-sm-4.col-md-4.col-lg-4
+                    |                             
+                    .col-xs-6.col-sm-5.col-md-4.col-lg-6
+            |             
+            .col-sm-6.col-lg-3
+              .panel.panel-primary
+                .panel-heading
+                  h4.text-center
+                    | Tournaments
+                    span.glyphicon.glyphicon-saved.pull-right
+                |                     
+                .panel-body.text-center
+                  p.lead
+                    strong Upcoming Tournaments
+                |                     
+                //- ul.list-group.list-group-flush
+                  li.list-group-item.liitem
+                    .skillLineDefault
+                      .skill.pull-left.text-center HTML5
+                      |                                 
+                      #rate1.rating
+                  |                         
+                  li.list-group-item.liitem
+                    .skillLineDefault
+                      .skill.pull-left.text-center CSS
+                      |                                 
+                      #rate2.rating
+                  |                         
+                  li.list-group-item.liitem
+                    .skillLineDefault
+                      .skill.pull-left.text-center jQuery
+                      |                                 
+                      #rate3.rating
+                  |                         
+                  li.list-group-item.liitem
+                    .skillLineDefault
+                      .skill.pull-left.text-center C#
+                      |                                 
+                      #rate4.rating
+                |                     
+                //- .panel-footer
+                  .row
+                    .col-xs-4.col-sm-3.col-md-4.col-lg-2
+                    |                             
+                    #qr2.col-xs-2.col-sm-4.col-md-4.col-lg-4
+                    |                             
+                    .col-xs-6.col-sm-5.col-md-4.col-lg-6
+            |     
+            if user.isAdmin > 0        
+              .col-sm-6.col-lg-3
+                .panel.panel-primary
+                  .panel-heading
+                    h4.text-center
+                      | Admin Settings
+                      span.glyphicon.glyphicon-saved.pull-right
+                  |                     
+                  //- .panel-body.text-center
+                    p.lead
+                      strong 
+                  |                     
+                  ul.list-group.list-group-flush
+                    li.list-group-item.liitem
+                      a.text-center(href='/formats') Formats
+                    |
+                    li.list-group-item.liitem
+                      a.text-center(href='/tournaments') Tournaments
+                    |                         
+                    //- li.list-group-item.liitem
+                      .skillLineDefault
+                        .skill.pull-left.text-center CSS
+                        |                                 
+                        #rate2.rating
+                    |                         
+                    //- li.list-group-item.liitem
+                      .skillLineDefault
+                        .skill.pull-left.text-center jQuery
+                        |                                 
+                        #rate3.rating
+                    |                         
+                    //- li.list-group-item.liitem
+                      .skillLineDefault
+                        .skill.pull-left.text-center C#
+                        |                                 
+                        #rate4.rating
+                  |                     
+                  //- .panel-footer
+                    .row
+                      .col-xs-4.col-sm-3.col-md-4.col-lg-2
+                      |                             
+                      #qr2.col-xs-2.col-sm-4.col-md-4.col-lg-4
+                      |                             
+                      .col-xs-6.col-sm-5.col-md-4.col-lg-6
+              |             
+            //- .col-sm-12.col-md-12.col-lg-6
+              .panel.panel-primary(style='height: 491px;')
+                .panel-heading
+                  h4.text-center
+                    | Quarterly Performance
+                    span.glyphicon.glyphicon-screenshot.pull-right
+                |                     
+                #chart1
+      link(rel='stylesheet', type='text/css', href='http://www.shieldui.com/shared/components/latest/css/shieldui-all.min.css')
+      link(rel='stylesheet', type='text/css', href='http://www.shieldui.com/shared/components/latest/css/light/all.min.css')
+      script(type='text/javascript', src='http://www.shieldui.com/shared/components/latest/js/jquery-1.10.2.min.js')
+      script(type='text/javascript', src='http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js')
+      |  
+      script(type='text/javascript').
+        initializeRatings();
+        initializeQR1();
+        initializeQR2();
+        initializeChart1();
+        function initializeChart1() {
+        var data1 = getRandomArray(20, 1, 50);
+        var data2 = getRandomArray(20, 20, 70);
+        $("#chart1").shieldChart({
+        theme: "light",
+        exportOptions: {
+        image: false,
+        print: false
+        },
+        primaryHeader: {
+        text: "Performance Data"
+        },
+        tooltipSettings: {
+        axisMarkers: {
+        enabled: true,
+        mode: 'x',
+        width: 2,
+        zIndex: 3,
+        drawColor: "white"
+        }
+        },
+        dataSeries: [
+        {
+        seriesType: 'bar',
+        collectionAlias: 'Achieved',
+        data: data1
+        },
+        {
+        seriesType: 'line',
+        collectionAlias: 'Target',
+        data: data2
+        }
+        ]
+        });
+        }
+        function initializeQR1() {
+        $("#qr1").shieldQRcode({
+        mode: "byte",
+        size: 150,
+        value: "Mike Smith",
+        style: {
+        color: "#1E97E3"
+        }
+        });
+        }
+        function initializeQR1() {
+        $("#qr1").shieldQRcode({
+        mode: "byte",
+        size: 150,
+        value: "Mike Smith",
+        style: {
+        color: "#1E97E3"
+        }
+        });
+        }
+        function initializeQR2() {
+        $("#qr2").shieldQRcode({
+        mode: "byte",
+        size: 150,
+        value: "Avarage: 6.3",
+        style: {
+        color: "#1E97E3"
+        }
+        });
+        }
+        function initializeRatings() {
+        $('#rate1').shieldRating({
+        max: 7,
+        step: 0.1,
+        value: 6.3,
+        markPreset: false
+        });
+        $('#rate2').shieldRating({
+        max: 7,
+        step: 0.1,
+        value: 6,
+        markPreset: false
+        });
+        $('#rate3').shieldRating({
+        max: 7,
+        step: 0.1,
+        value: 4.5,
+        markPreset: false
+        });
+        $('#rate4').shieldRating({
+        max: 7,
+        step: 0.1,
+        value: 5,
+        markPreset: false
+        });
+        }
+        function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function getRandomArray(length, min, max) {
+        var array = [];
+        for (var boudary = 0; boudary < length; boudary++) {
+        array.push(getRandomInt(min, max));
+        }
+        return array;
+        }

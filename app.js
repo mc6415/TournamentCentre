@@ -47,6 +47,14 @@ function restrict(req,res,next){
   }
 }
 
+function restrictAdmin(req,res,next){
+  if(isLoggedIn && req.session.user.isAdmin == 1){
+    next();
+  } else {
+    res.send("You seem to have taken a wrong turn there!");
+  }
+}
+
 mongoose.connect('mongodb://sa:password@ds157320.mlab.com:57320/untilttournament');
 
 // use pug for view engine and set the view directory.
@@ -71,14 +79,20 @@ app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/img', express.static(__dirname + '/public/img'));
 
 app.get('/', function(req,res){
-  res.render('index', {toast: false})
+  if(req.session.user){
+    res.redirect('/dashboard')
+  } else {
+    res.render('index', {toast: false})
+  }
 });
 app.post('/user/register', controllers.User.create)
 app.post('/user/login', controllers.User.login)
-app.get('/test', restrict, function(req,res){
-  res.send("Login working fine famz");
-})
+app.post('/api/format/create', restrictAdmin, controllers.Admin.createFormat)
+app.post('/api/tournament/create', restrictAdmin, controllers.Admin.createTournament);
 app.get('/logout', restrict, controllers.User.logout)
+app.get('/dashboard', restrict, controllers.User.home)
+app.get('/formats', restrictAdmin, controllers.Admin.formats)
+app.get('/tournaments', restrict, controllers.Admin.tournaments)
 
 app.listen(port, function(){
   console.log("Server now listening on port " + port);
